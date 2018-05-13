@@ -65,3 +65,23 @@ subset(set) {
 }
 ```
 
+
+134页: 广度优先搜索, 遍历数组元素, 应该用 for..of
+
+```javascript
+  bfs(s) {
+    const queue = [];
+    this.marked[s] = true;
+    queue.push(s);
+    while (queue.length > 0) {
+      const v = queue.shift();
+      console.log('graph.js: 77 -> bfs -> ', v);
+      for (const w of this.adj[v]) {
+        if (!this.marked[w]) {
+          this.marked[w] = true;
+          queue.push(w);
+        }
+      }
+    }
+  }
+```
