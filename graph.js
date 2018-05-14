@@ -10,10 +10,21 @@ class Graph {
       this.adj[i] = [];
     }
 
+    // 顶点是否被访问过
     this.marked = [];
     for (let i = 0; i < this.vertices; i++) {
       this.marked[i] = false;
     }
+
+    // 存储, 从一个顶点到下一个顶点的所有边
+    /*
+    * 比如:
+    * e = [undefined, 0, 0, undefined, 2]
+    * e[1] = 0, e[2] = 0, e[4] = 2
+    * 表示路径有, 0 -> 1, 0 -> 2, 2 -> 4
+    *
+    * */
+    this.edgeTo = [];
   }
 
   /*
@@ -74,14 +85,59 @@ class Graph {
     queue.push(s);
     while (queue.length > 0) {
       const v = queue.shift();
-      console.log('graph.js: 77 -> bfs -> ', v);
       for (const w of this.adj[v]) {
         if (!this.marked[w]) {
           this.marked[w] = true;
+
+          /*
+          * this.edgeTo[目标顶点] = 起始顶点;
+          * 不会被覆盖, 每个顶点只会被 visited 一次,
+          * 这个数组记录了如果要到达目标顶点, 需要从哪个上一个顶点出发
+          *
+          * eg:
+          * [0: undefined, 1: 0, 2: 0, 3: 2, 4: 2]
+          * 可以看出,
+          * 从 0 开始, 可以去到 1, 2
+          * 从 2 开始, 可以去到 3, 4
+          * */
+          this.edgeTo[w] = v;
           queue.push(w);
         }
       }
     }
+  }
+
+  /*
+  * 从顶点 0 开始, 到达顶点 v 的路径
+  * 求最短路径
+  * */
+  pathTo(v) {
+    const source = 0;
+    if (!this.hasPathTo(v)) {
+      return;
+    }
+    const path = [];
+    /*
+    * for 循环中
+    * 设 i 为目标顶点
+    * i 不为起始顶点, 则不停止
+    *
+    * i = this.edgeTo[i] 的意思是:
+    * 把 i 作为目标顶点, 它的起始访问顶点是什么
+    * */
+    for (let i = v; i !== source; i = this.edgeTo[i]) {
+      path.push(i);
+    }
+    path.push(source);
+    return path;
+  }
+
+  /*
+  * 传入目标顶点, 判断目标顶点是否被遍历过,
+  * 如果没有被遍历过, 证明从 0 开始, 无法到达目标顶点
+  * */
+  hasPathTo(v) {
+    return this.marked[v];
   }
 }
 

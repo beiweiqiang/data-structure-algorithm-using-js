@@ -24,3 +24,28 @@ it('graph bfs', () => {
   g.addEdge(2, 4);
   g.bfs(0);
 });
+
+it('graph shortest path 1', () => {
+  const g = new Graph(5);
+  g.addEdge(0, 2);
+  g.addEdge(0, 1);
+  g.addEdge(2, 4);
+  g.addEdge(4, 3);
+  g.addEdge(3, 2);
+  g.bfs(0);
+
+  expect(g.pathTo(4)).toEqual([4, 2, 0]);
+});
+
+it('graph shortest path 2', () => {
+  const g = new Graph(5);
+  g.addEdge(0, 2);
+  g.addEdge(0, 1);
+  g.addEdge(2, 4);
+  g.addEdge(0, 4);
+  g.addEdge(4, 3);
+  g.addEdge(3, 2);
+  g.bfs(0);
+
+  expect(g.pathTo(4)).toEqual([4, 0]);
+});
