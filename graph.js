@@ -46,7 +46,7 @@ class Graph {
       for (let j = 0; j < this.vertices; j++) {
         const obj = this.adj[i][j];
         if (obj !== undefined) {
-          console.log('graph.js: 34 -> showGraph -> ', `${i} -> ${obj}`);
+          // console.log('graph.js: 34 -> showGraph -> ', `${i} -> ${obj}`);
         }
       }
     }
@@ -57,11 +57,12 @@ class Graph {
   * 访问一个没有访问过的顶点, 将它标记为已访问,
   * 如果这个顶点的邻接表中有其他顶点是未访问过的, 递归进行访问
   *
+  * 深度优先搜索不是在查找特定路径, 而是通过搜索来查看图中有哪些路径可选
+  * 深度优先搜索是从当前顶点开始, 递归的先访问完一条路径, 然后从头开始再访问另一条路径...
   * */
   dfs(v) {
     // 标志该顶点已经 visited
     this.marked[v] = true;
-    console.log('graph.js: 50 -> dfs -> ', v);
     // 检查该顶点的邻接表, 如果存在没有 visited 的顶点, 递归调用 dfs
     for (const w of this.adj[v]) {
       if (!this.marked[w]) {
@@ -78,6 +79,8 @@ class Graph {
   * 1 查找与当前顶点相邻的所有未访问顶点, 设置成已访问, 然后添加到队列
   * 2 从队列头取出 v, 查看 v 是否有相邻的未访问的顶点, 添加到队列
   * 3 直到队列为空
+  *
+  * 广度优先搜索是从当前顶点开始, 一层一层往外访问
   * */
   bfs(s) {
     const queue = [];
@@ -109,7 +112,7 @@ class Graph {
 
   /*
   * 从顶点 0 开始, 到达顶点 v 的路径
-  * 求最短路径
+  * 求最短路径 (利用广度优先搜索)
   * */
   pathTo(v) {
     const source = 0;
@@ -138,6 +141,52 @@ class Graph {
   * */
   hasPathTo(v) {
     return this.marked[v];
+  }
+
+  /*
+  * 拓扑排序 (优先级约束调度)
+  * 与深度优先搜索类似, 不过拓扑排序会将邻接表中的顶点先访问完, 才将当前顶点入队列
+  *
+  * (个人感觉和深度优先搜索一样)
+  * */
+  topSort() {
+    const stack = [];
+    const visited = [];
+
+    for (let i = 0; i < this.vertices; i++) {
+      visited[i] = false;
+    }
+
+    for (let i = 0; i < visited.length; i++) {
+      if (visited[i] === false) {
+        this.topSortHelper(i, visited, stack);
+      }
+    }
+
+    for (let i = 0; i < stack.length; i++) {
+      if (stack[i] !== undefined && stack[i] !== false) {
+        console.log('graph.js: 164 -> topSort -> ', stack[i]);
+      }
+    }
+  }
+
+  /*
+  * 1 将当前顶点标记为已访问
+  * 2 递归访问当前顶点邻接表中的每个顶点, 继续 步骤1
+  * */
+  topSortHelper(v, visited, stack) {
+    // 设置为已访问
+    visited[v] = true;
+
+    // 对当前顶点邻接表中的所有顶点进行访问
+    for (const w of this.adj[v]) {
+      if (visited[w] === false) {
+        this.topSortHelper(visited[w], visited, stack);
+      }
+    }
+
+    // 如果当前顶点的邻接表中的所有顶点都访问过了, 将该顶点入栈
+    stack.push(v);
   }
 }
 

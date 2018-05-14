@@ -10,18 +10,30 @@ it('graph', () => {
 });
 
 it('graph dfs', () => {
-  const g = new Graph(5);
+  const g = new Graph(10);
   g.addEdge(0, 2);
   g.addEdge(0, 1);
   g.addEdge(2, 4);
+  g.addEdge(4, 8);
+  g.addEdge(2, 9);
+  g.addEdge(4, 5);
+  g.addEdge(8, 7);
+  g.addEdge(0, 8);
+  g.addEdge(0, 7);
   g.dfs(0);
 });
 
 it('graph bfs', () => {
-  const g = new Graph(5);
+  const g = new Graph(10);
   g.addEdge(0, 2);
   g.addEdge(0, 1);
   g.addEdge(2, 4);
+  g.addEdge(4, 8);
+  g.addEdge(2, 9);
+  g.addEdge(4, 5);
+  g.addEdge(8, 7);
+  g.addEdge(0, 8);
+  g.addEdge(0, 7);
   g.bfs(0);
 });
 
