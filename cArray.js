@@ -203,8 +203,34 @@ class CArray {
     }
   }
 
+  /*
+  * 动态计算间隔序列的希尔排序
+  * */
+  shellSort1() {
+    const N = this.dataStore.length;
+    let h = 1;
+    while (h < N / 3) {
+      h = 3 * h + 1;
+    }
+    while (h > 1) {
+      for (let i = h; i < N; i++) {
+        const tmp = this.dataStore[i];
+        let j = i;
+        for (; j >= h && this.dataStore[j - h] > tmp; j -= h) {
+          this.dataStore[j] = this.dataStore[j - h];
+        }
+        this.dataStore[j] = tmp;
+      }
+      h = (h - 1) / 3;
+    }
+  }
 
 
+  /*
+  * 归并排序
+  * 实现原理: 把一系列排好序的子序列合并成一个大的完整的有序序列
+  *
+  * */
 
 
 }

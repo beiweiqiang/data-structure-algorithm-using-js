@@ -65,3 +65,18 @@ it('shell sort test speed', () => {
   const end = new Date().getTime();
   console.log(`shell speed: ${end - start}`);
 });
+
+it('shell sort1 order', () => {
+  const nums = new CArray(10);
+  nums.setData();
+  nums.shellSort1();
+  console.log('shell sort: ', nums.dataStore);
+});
+it('shell sort1 test speed', () => {
+  const nums = new CArray(200000);
+  nums.setData();
+  const start = new Date().getTime();
+  nums.shellSort1();
+  const end = new Date().getTime();
+  console.log(`shell speed: ${end - start}`);
+});
