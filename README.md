@@ -67,7 +67,6 @@ subset(set) {
 
 
 134页: 广度优先搜索, 遍历数组元素, 应该用 for..of
-
 ```javascript
   bfs(s) {
     const queue = [];
@@ -82,6 +81,32 @@ subset(set) {
           queue.push(w);
         }
       }
+    }
+  }
+```
+
+
+157页:
+```javascript
+  /*
+  * 动态计算间隔序列的希尔排序
+  * */
+  shellSort1() {
+    const N = this.dataStore.length;
+    let h = 1;
+    while (h < N / 3) {
+      h = 3 * h + 1;
+    }
+    while (h > 1) {
+      for (let i = h; i < N; i++) {
+        const tmp = this.dataStore[i];
+        let j = i;
+        for (; j >= h && this.dataStore[j - h] > tmp; j -= h) {
+          this.dataStore[j] = this.dataStore[j - h];
+        }
+        this.dataStore[j] = tmp;
+      }
+      h = (h - 1) / 3;
     }
   }
 ```

@@ -230,7 +230,71 @@ class CArray {
   * 归并排序
   * 实现原理: 把一系列排好序的子序列合并成一个大的完整的有序序列
   *
+  * 自底向上归并排序
   * */
+  mergeSort() {
+    const arr = this.dataStore;
+    if (arr.length < 2) {
+      return;
+    }
+    // 设置步长为 1, 即子列的长度都为 1
+    let step = 1;
+    // 左子序列, 右子序列 的起始 index
+    let left, right;
+    while (step < arr.length) {
+      left = 0;
+      right = step;
+      while (right + step <= arr.length) {
+        this.mergeArrays(arr, left, left + step, right, right + step);
+        left = right + step;
+        right = left + step;
+      }
+      // 如果从上面循环出来的 right 还是小于 arr.length
+      if (right < arr.length) {
+        this.mergeArrays(arr, left, left + step, right, arr.length);
+      }
+      step *= 2;
+    }
+  }
+
+  mergeArrays(arr, startLeft, stopLeft, startRight, stopRight) {
+    // 多加 1 是因为要添加哨兵值
+    const rightArr = new Array(stopRight - startRight + 1);
+    const leftArr = new Array(stopLeft - startLeft + 1);
+
+    // 将右子序列赋给新的数组 rightArr
+    let k = startRight;
+    for (let i = 0; i < rightArr.length - 1; i++) {
+      rightArr[i] = arr[k];
+      ++k;
+    }
+
+    // 将左子序列赋给新的数组 leftArr
+    k = startLeft;
+    for (let i = 0; i < leftArr.length - 1; i++) {
+      leftArr[i] = arr[k];
+      ++k;
+    }
+
+    // 为什么要设置哨兵值? ( 666 )
+    // 不用出现一个情况, 其中一个数组为空了, 需要将另一个数组的剩余元素全插入序列
+    rightArr[rightArr.length - 1] = Infinity; // 哨兵值
+    leftArr[leftArr.length - 1] = Infinity;
+
+    // 将新排序好的序列覆盖原来 arr 序列
+    let m = 0, n = 0;
+    for (let i = startLeft; i < stopRight; i++) {
+      if (leftArr[m] <= rightArr[n]) {
+        arr[i] = leftArr[m];
+        m++;
+      } else {
+        arr[i] = rightArr[n];
+        n++;
+      }
+    }
+    // console.log('cArray.js: 283 -> mergeArrays -> ', leftArr);
+    // console.log('cArray.js: 284 -> mergeArrays -> ', rightArr);
+  }
 
 
 }
