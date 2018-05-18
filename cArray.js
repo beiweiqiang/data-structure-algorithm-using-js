@@ -297,6 +297,39 @@ class CArray {
   }
 
 
+  /*
+  * 快速排序
+  * 通过递归的方式将数据依次分解为包含较小元素和较大元素的不同子序列
+  *
+  * 算法:
+  * 1 选择一个基准元素, 将列表分隔成两个子序列
+  * 2 将所有小于基准值的元素放到基准值前面, 所有大于基准值的元素放到基准值后面
+  * 3 分别对 较小元素的子序列 和 较大元素的子序列 重复步骤1, 2
+  * */
+  qSort(list) {
+    // const list = this.dataStore;
+
+    if (list.length === 0) {
+      return [];
+    }
+    if (list.length === 1) {
+      return list;
+    }
+    const lesser = [];
+    const greater = [];
+    const pivot = list[0];
+    for (let i = 1; i < list.length; i++) {
+      const obj = list[i];
+      if (obj < pivot) {
+        lesser.push(obj);
+      } else {
+        greater.push(obj);
+      }
+    }
+    return this.qSort(lesser).concat(pivot, this.qSort(greater));
+  }
+
+
 }
 
 module.exports = CArray;

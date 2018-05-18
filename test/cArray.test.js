@@ -95,3 +95,18 @@ it('merge sort test speed', () => {
   const end = new Date().getTime();
   console.log(`merge speed: ${end - start}`);
 });
+
+it('quick sort order', () => {
+  const nums = new CArray(10);
+  nums.setData();
+  const data = nums.qSort(nums.dataStore);
+  console.log('quick sort: ', data);
+});
+it('quick sort test speed', () => {
+  const nums = new CArray(200000);
+  nums.setData();
+  const start = new Date().getTime();
+  nums.qSort(nums.dataStore);
+  const end = new Date().getTime();
+  console.log(`quick speed: ${end - start}`);
+});
