@@ -307,8 +307,6 @@ class CArray {
   * 3 分别对 较小元素的子序列 和 较大元素的子序列 重复步骤1, 2
   * */
   qSort(list) {
-    // const list = this.dataStore;
-
     if (list.length === 0) {
       return [];
     }

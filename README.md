@@ -1,5 +1,20 @@
 # 数据结构与算法, JavaScript版
 
+## 关于排序速度
+
+同样跑 200000 数据
+
+```
+bubble speed: 624
+selection speed: 338
+insertion speed: 95
+定步长 shell speed: 3561
+可变步长 shell speed: 36
+merge speed: 253
+quick speed: 122
+js sort speed: 108
+```
+
 // TODO
 
 ## 勘误 (个人认为)

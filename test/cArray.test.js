@@ -6,6 +6,7 @@ it.skip('CArray', () => {
   console.log(nums.toString());
 });
 
+// 冒泡排序
 it.skip('bubble sort order', () => {
   const nums = new CArray(10);
   nums.setData();
@@ -21,7 +22,8 @@ it('bubble sort', () => {
   console.log(`bubble speed: ${end - start}`);
 });
 
-it('selection sort order', () => {
+// 选择排序
+it.skip('selection sort order', () => {
   const nums = new CArray(10);
   nums.setData();
   nums.selectionSort();
@@ -36,7 +38,8 @@ it('selection sort', () => {
   console.log(`selection speed: ${end - start}`);
 });
 
-it('insertion sort order', () => {
+// 插入排序
+it.skip('insertion sort order', () => {
   const nums = new CArray(10);
   nums.setData();
   nums.insertionSort();
@@ -51,7 +54,8 @@ it('insertion sort test speed', () => {
   console.log(`insertion speed: ${end - start}`);
 });
 
-it('shell sort order', () => {
+// 定步长的 希尔排序
+it.skip('shell sort order', () => {
   const nums = new CArray(10);
   nums.setData();
   nums.shellSort();
@@ -66,7 +70,8 @@ it('shell sort test speed', () => {
   console.log(`shell speed: ${end - start}`);
 });
 
-it('shell sort1 order', () => {
+// 可变步长的 希尔排序
+it.skip('shell sort1 order', () => {
   const nums = new CArray(10);
   nums.setData();
   nums.shellSort1();
@@ -81,7 +86,8 @@ it('shell sort1 test speed', () => {
   console.log(`shell1 speed: ${end - start}`);
 });
 
-it('merge sort order', () => {
+// 合并排序
+it.skip('merge sort order', () => {
   const nums = new CArray(10);
   nums.setData();
   nums.mergeSort();
@@ -96,7 +102,8 @@ it('merge sort test speed', () => {
   console.log(`merge speed: ${end - start}`);
 });
 
-it('quick sort order', () => {
+// 快排
+it.skip('quick sort order', () => {
   const nums = new CArray(10);
   nums.setData();
   const data = nums.qSort(nums.dataStore);
@@ -109,4 +116,20 @@ it('quick sort test speed', () => {
   nums.qSort(nums.dataStore);
   const end = new Date().getTime();
   console.log(`quick speed: ${end - start}`);
+});
+
+// JavaScript 自带的 sort 方法
+it.skip('js sort order', () => {
+  const nums = new CArray(10);
+  nums.setData();
+  nums.dataStore.sort((a, b) => a - b);
+  console.log('js sort: ', nums.dataStore);
+});
+it('js sort speed', () => {
+  const nums = new CArray(200000);
+  nums.setData();
+  const start = new Date().getTime();
+  nums.dataStore.sort((a, b) => a - b);
+  const end = new Date().getTime();
+  console.log(`js sort speed: ${end - start}`);
 });
