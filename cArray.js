@@ -327,6 +327,291 @@ class CArray {
     return this.qSort(lesser).concat(pivot, this.qSort(greater));
   }
 
+  /*
+  * 检索算法 -------
+  * */
+
+  /*
+  * 顺序查找
+  * */
+  seqSearch(arr, data) {
+    for (let i = 0; i < arr.length; i++) {
+      const obj = arr[i];
+      if (obj === data) {
+        return i;
+      }
+    }
+    return -1;
+  }
+
+  /*
+  * 查找最小值
+  * */
+  findMin(arr) {
+    let min = arr[0];
+    for (let i = 1; i < arr.length; i++) {
+      if (arr[i] < min) {
+        min = arr[i]
+      }
+    }
+    return min;
+  }
+
+  /*
+  * 查找最大值
+  * */
+  findMax(arr) {
+    let max = arr[0];
+    for (let i = 1; i < arr.length; i++) {
+      if (arr[i] > max) {
+        max = arr[i]
+      }
+    }
+    return max;
+  }
+
+  /*
+  * 使用自组织数据
+  * 80-20原则: 指对某一数据集执行的 80% 的查找操作都是对其中 20% 的数据元素进行查找
+  * */
+
+  /*
+  * 在顺序查找中进行自组织数据
+  * 查找最频繁的元素最终会移动到数据集的起始位置
+  * */
+  seqSearch1(arr, data) {
+    for (let i = 0; i < arr.length; i++) {
+      if (arr[i] === data) {
+        if (i > 0) {
+          this.swap(arr, i, i - 1);
+        }
+        return true;
+      }
+    }
+    return false;
+  }
+
+  /*
+  * 顺序查找
+  * 将找到的元素移动到数据集的起始位置, 但是如果这个元素已经很接近起始位置, 则不会对它的位置进行交换
+  * 原则:仅当数据位于数据集的前 20% 元素之外, 该数据才需要被重新移动到数据集的起始位置
+  * */
+  seqSearch2(arr, data) {
+    for (let i = 0; i < arr.length; i++) {
+      if (arr[i] === data) {
+        if (i > (arr.length * 0.2)) {
+          this.swap(arr, i, 0);
+        }
+        return true;
+      }
+    }
+    return false;
+  }
+
+  /*
+  * 二分查找算法
+  * 只对有序的数据集有效
+  * 算法:
+  * 1 将数组的第一个位置设置为下边界 (0)
+  * 2 将数组的最后一个元素的位置设置为上边界 (数组的长度减1)
+  * 3 若下边界等于或小于上边界, 做如下操作:
+  *   a 将中点设置为 (上边界加下边界) 除以 2
+  *   b 如果中点的元素小于查询的值, 则将下边界设置为中点元素所在下标加 1
+  *   c 如果中点的元素大于查询的值, 则将上边界设置为中点元素所在下标减 1
+  *   d 否则中点元素即为要查找的数据
+  * */
+  binSearch(arr, data) {
+    let upperBound = arr.length - 1;
+    let lowerBound = 0;
+    while (lowerBound <= upperBound) {
+      const mid = Math.floor((upperBound + lowerBound) / 2);
+      if (arr[mid] < data) {
+        lowerBound = mid;
+      } else if (arr[mid > data]) {
+        upperBound = mid;
+      } else {
+        return mid;
+      }
+    }
+    return -1;
+  }
+
+  /*
+  * 计算重复次数
+  * 找到元素以后, 弄两个循环, 一个向左, 一个向右, 查找与数据一样的其他数据的个数
+  * */
+  count(arr, data) {
+    let count = 0;
+    let position = this.binSearch(arr, data);
+    if (position > -1) {
+      ++count;
+      for (let i = position - 1; i > 0; --i) {
+        if (arr[i] === data) {
+          ++count;
+        } else {
+          break;
+        }
+      }
+      for (let i = position + 1; i < arr.length; ++i) {
+        if (arr[i] === data) {
+          ++count;
+        } else {
+          break;
+        }
+      }
+    }
+  }
+
+  /*
+  * 高级算法
+  * 动态规划, 贪心算法
+  * */
+
+  /*
+  * 动态规划
+  * 动态规划通常会使用一个数组来建立一张表, 用于存放被分解成众多子问题的解.
+  * 举例, 比如斐波那契数列
+  * */
+  // 正常来说
+  recurFib(n) {
+    if (n < 2) {
+      return n;
+    }
+    else {
+      return this.recurFib(n - 1) + this.recurFib(n - 2);
+    }
+  }
+
+  /*
+  * 上面的斐波那契数列计算为什么不好?
+  * 为了计算 fib(5), 它会计算 fib(3), fib(4)
+  * fib(3) = fib(2) + fib(1), fib(4) = fib(3) [这个已经计算过] + fib(2)
+  *          fib(2) = fib(1) + fib(0)
+  * 有太多的值在递归的过程中被重新计算
+  * 需要将已经计算过的值记录下来
+  * 所有的子问题通常存储在一个数组里面便于访问
+  * */
+  dynFib(n) {
+    // 参数 n 是第几个数, 对应数组中的 index 是 n-1
+
+    const val = [];
+    for (let i = 0; i < n; i++) {
+      val[i] = 0;
+    }
+    if (n === 1 || n === 2) {
+      return 1;
+    }
+    else {
+      val[1] = 1;
+      val[2] = 2;
+      for (let i = 3; i <= n; i++) {
+        val[i] = val[i - 1] + val[i - 2];
+      }
+      return val[n - 1];
+    }
+  }
+
+  /*
+  * 查找最长公共子串
+  * 使用动态规划算法
+  * 算法:
+  *   使用一个二维数组存储两个字符串相同位置的字符串比较结果
+  *   初始化时, 该数组的每一个元素被设置为 0
+  *   每次在这两个数组的相同位置发现了匹配, 就将数组对应行和列的元素加 1, 否则保持为 0
+  * */
+  static lcs(word1, word2) {
+    let max = 0;
+    let index = 0;
+    const lcsarr = new Array(word1.length + 1);
+    for (let i = 0; i <= word1.length + 1; i++) {
+      lcsarr[i] = new Array(word2.length + 1);
+      for (let j = 0; j <= word2.length + 1; j++) {
+        lcsarr[i][j] = 0;
+      }
+    }
+    for (let i = 0; i <= word1.length; i++) {
+      for (let j = 0; j <= word2.length; j++) {
+        if (i === 0 || j === 0) {
+          lcsarr[i][j] = 0;
+        } else {
+          if (word1[i - 1] === word2[j - 1]) {
+            lcsarr[i][j] = lcsarr[i - 1][j - 1] + 1;
+          } else {
+            lcsarr[i][j] = 0;
+          }
+        }
+        if (max < lcsarr[i][j]) {
+          max = lcsarr[i][j];
+          index = i;
+        }
+      }
+    }
+    let str = '';
+    if (max === 0) {
+      return '';
+    } else {
+      for (let i = index - max; i <= max; i++) {
+        str += word2[i];
+      }
+      return str;
+    }
+  }
+
+  /*
+  * 背包问题: 递归解决方案
+  *
+  * capacity: 背包总容量
+  * size: 商品尺寸数组
+  * value: 商品价值数组
+  * n: 商品个数
+  * */
+  static knapsack(capacity, size, value, n) {
+    if (n === 0 || capacity === 0) {
+      return 0;
+    }
+
+    if (size[n - 1] > capacity) {
+      return this.knapsack(capacity, size, value, n - 1);
+    } else {
+      return max(
+        value[n - 1] + this.knapsack(capacity - size[n - 1], size, value, n - 1),
+        this.knapsack(capacity, size, value, n - 1)
+      );
+    }
+
+    function max(a, b) {
+      return a > b ? a : b;
+    }
+  }
+
+  /*
+  * 背包问题: 动态规划方案
+  * */
+  static dKnapsack(capacity, size, value, n) {
+    const K = [];
+    for (let i = 0; i <= capacity + 1; i++) {
+      K[i] = [];
+    }
+    for (let i = 0; i <= n; i++) {
+      for (let w = 0; w <= capacity; w++) {
+        if (i === 0 || w === 0) {
+          K[i][w] = 0;
+        } else if (size[i - 1] <= w) {
+          K[i][w] = max(
+            value[i - 1] + K[i - 1][w - size[i - 1]],
+            K[i - 1][w]
+          );
+        } else {
+          K[i][w] = K[i - 1][w];
+        }
+      }
+    }
+    return K[n][capacity];
+
+    function max(a, b) {
+      return a > b ? a : b;
+    }
+  }
 
 }
 

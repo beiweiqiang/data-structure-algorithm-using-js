@@ -6,6 +6,10 @@ it.skip('CArray', () => {
   console.log(nums.toString());
 });
 
+/*
+* 排序算法
+* */
+
 // 冒泡排序
 it.skip('bubble sort order', () => {
   const nums = new CArray(10);
@@ -133,3 +137,52 @@ it('js sort speed', () => {
   const end = new Date().getTime();
   console.log(`js sort speed: ${end - start}`);
 });
+
+/*
+* 检索算法
+* */
+
+// 顺序查找
+it('seq search', () => {
+  const nums = new CArray(10);
+  nums.setData();
+  const findNum = 3;
+  console.log('origin array: ', nums.dataStore);
+  const result = nums.seqSearch(nums.dataStore, findNum);
+  console.log(`seq search find num: ${findNum}, find result: ${result}`);
+});
+
+// 查找最小值
+it('search find min', () => {
+  const nums = new CArray(10);
+  nums.setData();
+  console.log('origin array: ', nums.dataStore);
+  const result = nums.findMin(nums.dataStore);
+  console.log(`find min: ${result}`);
+});
+
+// 二分法查找
+it('bin search', () => {
+  const nums = new CArray(10);
+  console.log('origin array: ', nums.dataStore);
+  const result = nums.binSearch(nums.dataStore, 3);
+  console.log(`bin search, find index: ${result}`);
+});
+
+it('lcs', () => {
+  const word1 = 'heanqi';
+  const word2 = 'weanqk';
+  const l = CArray.lcs(word1, word2);
+  console.log('cArray.test.js: 177 -> l -> ', l);
+});
+
+it('knapsack', () => {
+  const value = [4, 5, 10];
+  const size = [3, 4, 8];
+  const capacity = 14;
+  const n = 3;
+  const t = CArray.dKnapsack(capacity, size, value, n);
+  console.log('cArray.test.js: 185 -> t -> ', t);
+});
+
+
