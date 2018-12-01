@@ -57,10 +57,11 @@ class CArray {
   bubbleSort() {
     const numElements = this.dataStore.length;
     // 外循环剩下最后一个的时候不用比较, 所以是 i > 1
-    // i 代表 有 i 个元素需要进行比较
+    // **i 代表 有 i 个元素需要进行比较**
     for (let i = numElements; i > 1; i--) {
       // 内循环是元素间的比较
-      // j 代表 一个元素需要和其他元素比较 j 次
+      // **j 代表 一个元素需要和其他元素比较 j 次**
+      // **j 需要和其他 i-1 个元素进行比较**
       for (let j = 0; j < i - 1; j++) {
         if (this.dataStore[j] > this.dataStore[j + 1]) {
           this.swap(this.dataStore, j, j + 1);
